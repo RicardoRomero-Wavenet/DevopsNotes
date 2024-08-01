@@ -8,7 +8,7 @@ def main(page: Page):
     global code, compiled_code
     code = ""
     compiled_code = ""
-    textbox_compiled = Text("Compiled code: ", size=20)
+    textbox_compiled = Text("Compiled code: ", size=20, selectable=True)
     textfield_code = TextField( border="none", max_lines=5000,multiline=True, min_lines=1,autofocus=True,expand=True)
     
     def compile_code(e):
@@ -47,9 +47,9 @@ def main(page: Page):
             [
                 rail,
                 VerticalDivider(width=1),
-                Column([ ElevatedButton("Compile", on_click=compile_code),textfield_code], alignment=MainAxisAlignment.START, expand=True),
+                Column([ textfield_code, IconButton(tooltip= "Compile", on_click=compile_code, icon = icons.PLAY_ARROW_OUTLINED)], alignment=MainAxisAlignment.START, expand=True),
                 VerticalDivider(width=1),
-                Column([ textbox_compiled,], alignment=MainAxisAlignment.START, expand=True),
+                Column([ textbox_compiled], alignment=MainAxisAlignment.START, expand=True),
             ],
             expand=True,
         )
