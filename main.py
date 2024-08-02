@@ -1,22 +1,55 @@
 import flet
 import js2py
-from flet import ElevatedButton, Page, Text, TextField, Row, Column,colors,IconButton, NavigationRail,FloatingActionButton, NavigationRailDestination, NavigationRailLabelType, Icon, VerticalDivider, MainAxisAlignment, PopupMenuButton, icons, AppBar
+from flet import (
+    ElevatedButton,
+    BoxShadow,
+    Page,
+    Text,
+    Offset,
+    ShadowBlurStyle,
+    TextField,
+    Row,
+    Column,
+    Container,
+    colors,
+    IconButton,
+    NavigationRail,
+    FloatingActionButton,
+    NavigationRailDestination,
+    NavigationRailLabelType,
+    Icon,
+    VerticalDivider,
+    MainAxisAlignment,
+    PopupMenuButton,
+    icons,
+    AppBar,
+)
+
 """
 Hacer una aplicacion que use NavigationRail, y que tenga las opciones Nuevo, Guardar, About y Salir
 """
+
+
 def main(page: Page):
     global code, compiled_code
     code = ""
     compiled_code = ""
     textbox_compiled = Text("Compiled code: ", size=20, selectable=True)
-    textfield_code = TextField( border="none", max_lines=5000,multiline=True, min_lines=1,autofocus=True,expand=True)
-    
+    textfield_code = TextField(
+        border="none",
+        max_lines=5000,
+        multiline=True,
+        min_lines=1,
+        autofocus=True,
+        expand=True,
+    )
+
     def compile_code(e):
         code = textfield_code.value
         compiled_code = js2py.eval_js(code)
         textbox_compiled.value = "Compiled code: \n" + str(compiled_code)
         page.update()
-     
+
     rail = NavigationRail(
         selected_index=0,
         label_type=NavigationRailLabelType.ALL,
@@ -47,12 +80,30 @@ def main(page: Page):
             [
                 rail,
                 VerticalDivider(width=1),
-                Column([ textfield_code, IconButton(tooltip= "Compile", on_click=compile_code, icon = icons.PLAY_ARROW_OUTLINED)], alignment=MainAxisAlignment.START, expand=True),
+                Column(
+                    [
+                        Container(
+                            content=Row([Text("Title here",size=20), IconButton(icon=icons.COPY)], alignment=MainAxisAlignment.SPACE_BETWEEN),
+                            width = max
+                        ),
+                        textfield_code,
+                        IconButton(
+                            tooltip="Compile",
+                            on_click=compile_code,
+                            icon=icons.PLAY_ARROW_OUTLINED,
+                        ),
+                    ],
+                    alignment=MainAxisAlignment.START,
+                    expand=True,
+                ),
                 VerticalDivider(width=1),
-                Column([ textbox_compiled], alignment=MainAxisAlignment.START, expand=True),
+                Column(
+                    [textbox_compiled], alignment=MainAxisAlignment.START, expand=True
+                ),
             ],
             expand=True,
         )
     )
+
 
 flet.app(target=main)
